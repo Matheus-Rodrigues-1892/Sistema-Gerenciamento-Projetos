@@ -1,0 +1,77 @@
+{
+    // Use o IntelliSense para saber mais sobre os atributos possíveis.
+    // Focalizar para exibir as descrições dos atributos existentes.
+    // Para obter mais informações, acesse: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Main",
+            "request": "launch",
+            "mainClass": "treePack.Main",
+            "projectName": "Java_3df404fa"
+        },
+        {
+            "type": "java",
+            "name": "Launch MyPackageClass",
+            "request": "launch",
+            "mainClass": "MyPackageClass",
+            "projectName": "Java_3df404fa"
+        },
+        {
+            "type": "java",
+            "name": "Launch Expo",
+            "request": "launch",
+            "mainClass": "Expo",
+            "projectName": "Java_3df404fa"
+        },
+        {
+            "type": "java",
+            "name": "Launch Funtions",
+            "request": "launch",
+            "mainClass": "Funtions",
+            "projectName": "Java_3df404fa"
+        },
+        {
+            "type": "java",
+            "name": "Launch Functions",
+            "request": "launch",
+            "mainClass": "Functions",
+            "projectName": "Java_3df404fa"
+        },
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Launch BinarySearch",
+            "request": "launch",
+            "mainClass": "BinarySearch",
+            "projectName": "Java_3df404fa"
+        },
+        {
+            "type": "java",
+            "name": "Launch ScannerClassExample",
+            "request": "launch",
+            "mainClass": "ScannerClassExample",
+            "projectName": "Java_3df404fa"
+        },
+        {
+            "type": "java",
+            "name": "Launch hello",
+            "request": "launch",
+            "mainClass": "hello",
+            "projectName": "Java_3df404fa"
+        },
+        {
+            "type": "java",
+            "name": "Launch lList",
+            "request": "launch",
+            "mainClass": "lList",
+            "projectName": "Java_3df404fa"
+        }
+    ]
+}
