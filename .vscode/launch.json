@@ -8,6 +8,13 @@
             "type": "java",
             "name": "Launch Main",
             "request": "launch",
+            "mainClass": "Main",
+            "projectName": "Sistema-Gerenciamento-Projetos_fc13b6a"
+        },
+        {
+            "type": "java",
+            "name": "Launch Main",
+            "request": "launch",
             "mainClass": "treePack.Main",
             "projectName": "Java_3df404fa"
         },
