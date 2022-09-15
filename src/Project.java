@@ -370,5 +370,12 @@ public class Project {
         return horaFinal;        
     }
 
+    public void mostrarAllProjects() {
+
+        for (int i = 0; i < listProjetos.size(); i++) {
+            System.out.println("Identificação: " + listProjetos.get(i).idProjeto + "\nDescrição: " + listProjetos.get(i).descricao);
+        }
+    }
+
     
 }

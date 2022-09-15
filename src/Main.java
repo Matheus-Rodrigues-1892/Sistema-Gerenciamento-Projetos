@@ -156,6 +156,9 @@ public class Main {
                 
             } else if (opcao == 8) {
 
+                project.mostrarAllProjects();
+                activities.mostrarAllActivities();
+
                 
             } 
         }

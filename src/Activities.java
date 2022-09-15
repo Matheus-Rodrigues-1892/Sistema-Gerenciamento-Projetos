@@ -346,5 +346,12 @@ public class Activities {
         }
     }
 
+    public void mostrarAllActivities() {
+
+        for (int i = 0; i < listAtividades.size(); i++) {
+            System.out.println("Identificação: " + listAtividades.get(i).idAtividade + "\nDescrição: " + listAtividades.get(i).descricao);
+        }
+    }
+
     
 }
