@@ -59,7 +59,7 @@ public class Profissionais extends User {
 
                 listProfissionaisEnvolvidos.add(profissional);
 
-                System.out.println(listProfissionaisEnvolvidos.get(0).nome + listProfissionaisEnvolvidos.get(0).cpf);
+                System.out.println(listProfissionaisEnvolvidos.get(0).idProjeto + listProfissionaisEnvolvidos.get(0).cpf);
 
                 return listProfissionaisEnvolvidos;
 
@@ -331,20 +331,6 @@ public class Profissionais extends User {
     }
 
 //------------------------SELECIONAR PROFISSIONAIS-----
-
-    protected int selecionarProfissional(String nome, String cpf, int idProjeto, int idAtividade2){
-
-        for (int j = 0; j < listProfissionaisEnvolvidos.size(); j++){
-            
-            if (listProfissionaisEnvolvidos.get(j).nome.equals(nome) && listProfissionaisEnvolvidos.get(j).idProjeto == idProjeto && listProfissionaisEnvolvidos.get(j).idAtividade == idAtividade){
-
-                return j;
-
-            }
-        }
-        return 0;
-
-    }
 
     public void printProfissionaisProjetoEnvolvidos(int idProjeto) {
 
