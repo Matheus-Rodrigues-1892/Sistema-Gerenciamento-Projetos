@@ -12,7 +12,7 @@ public class Main {
         System.out.println("=================================================");
         System.out.println("\tBem-vindo ao Sistema de Gerenciamento de Projetos");
 
-        login();
+        //login();
         System.out.println("Selecione uma das opções abaixo:\n");
         menu();
 
@@ -63,7 +63,6 @@ public class Main {
         Boolean condicao = true;
         User user = new User();
         Project project = new Project();
-        Activities activities = new Activities();
         
         while (condicao) {
             
@@ -89,34 +88,29 @@ public class Main {
                 break;
 
             } else if (opcao == 1){
-                user.addUsers();
+                user.adicionarUsers();
                 System.out.println("Usuário adicionado com sucesso!\n");
 
             } else if (opcao == 2) {
 
-                String nome = user.usuarioNome();
-                String cpf = user.usuarioCpf();
-                user.removeUsers(nome, cpf);
+                user.mostrarUsers();
+
+                user.removeUser();
+                System.out.println("Usuário removido com sucesso!\n");
         
             } else if (opcao == 3) {
 
-                String nome = user.usuarioNome();
-                String cpf = user.usuarioCpf();
-                user.editUsers(nome, cpf);
+                user.mostrarUsers();
+
+                user.editUsers();
+                System.out.println("Usuário editado com sucesso!\n");
 
             } else if (opcao == 4 ){
 
-                System.out.println("Projetos só podem ser criados por um pesquisador ou um professor");
-                System.out.println("Estes são os disponíveis: \n");
-                user.mostrarAllUsersCoordenators();
-
-                String nome = user.usuarioNome();
-                //String cpf = user.usuarioCpf();
-                
-                project.createProject(nome);
-                System.out.println("Projeto adicionado com sucesso!\n");
+                project.createProject();
+                project.printProjetos();
     
-            } else if (opcao == 5) {
+            } /*else if (opcao == 5) {
 
                 int idProjeto = project.projectIdProjeto();
                 project.removeProject(idProjeto);
@@ -160,7 +154,7 @@ public class Main {
                 activities.mostrarAllActivities();
 
                 
-            } 
+            }  */
         }
     }
     

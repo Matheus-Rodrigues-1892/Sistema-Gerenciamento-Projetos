@@ -1,357 +1,199 @@
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class Activities {
+public class Activities extends Info {
     private int idAtividade;
-    private int idProjeto;
-    private String descricao;
-    private String tarefa;
     private String responsavel;
-    private LocalDate dataInicial;
-    private LocalDate dataFinal;
-    private String horaInicial;
-    private String horaFinal;
+    Info infoAtividade = new Info();
+    ArrayList<Activities> listActivities = new ArrayList<>();
+    ArrayList<String> listTarefas = new ArrayList<>();
 
-    User usuarioAlocado = new User ();
-    ArrayList<Activities> listAtividades = new ArrayList<>();
-    ArrayList<User> listUsuariosAlocados = new ArrayList<>();
+    Scanner input = new Scanner(System.in);
+    private int idProjeto;
 
 
     public Activities() {
     }
 
-    public Activities(int idAtividade, String descricao, String tarefa, String responsavel, LocalDate dataInicial, LocalDate dataFinal, String horaInicial, String horaFinal, int idProjeto) {
+    public Activities(int idAtividade, int idProjeto, String descricao, String responsavel, String dataInicial, String dataFinal, String horaInicial, String horaFinal, ArrayList<Profissionais> listProfissionais) {
 
+        super(idProjeto, descricao, dataInicial, dataFinal, horaInicial, horaFinal, listProfissionais);
         this.idAtividade = idAtividade;
-        this.descricao = descricao;
-        this.tarefa = tarefa;
         this.responsavel = responsavel;
-        this.dataInicial = dataInicial;
-        this.dataFinal = dataFinal;
-        this.horaInicial = horaInicial;
-        this.horaFinal = horaFinal;
-        this.idProjeto = idProjeto;
     }
 
-    
-    
-    public int activitiesIdAtividade() {
-        Scanner input = new Scanner(System.in);
+    public ArrayList<Activities> createActivities (int idProjeto) {
 
-        System.out.println("\tDigite o número de identificação da atividade: ");
-        idAtividade = input.nextInt();
-
-        //input.close();
-
-        return idAtividade;
-    }
-
-    public String activitiesDescricao() {
-
-        Scanner input = new Scanner(System.in);
-
-        System.out.println("\tInsira a descrição: ");
-        descricao = input.nextLine();
-
-        //input.close();
-
-        return descricao;
-    }
-
-    public LocalDate activitiesDataInicial() {
-
-        Scanner input = new Scanner(System.in);
-
-        System.out.println("\tInsira a data inicial no seguinte formato dd/mm/aaaa: ");
-        String data = input.nextLine();
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 
-        LocalDate dataInicialFormatada = LocalDate.parse(data, formato);    
-
-        //input.close();
-
-        return dataInicialFormatada;
-    }
-
-    public LocalDate activitiesDataFinal() {
-
-        Scanner input = new Scanner(System.in);
-
-        System.out.println("\tInsira a data final no seguinte formato dd/mm/aaaa: ");
-        String data = input.nextLine();
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 
-        LocalDate dataFinalFormatada = LocalDate.parse(data, formato);    
-
-        //input.close();
-
-        return dataFinalFormatada;
-    }
-
-    public String activitiesHoraInicial() {
-
-        Scanner input = new Scanner(System.in);
-
-        System.out.println("\tInsira a hora inicial no formato 24h ");
-        horaInicial = input.nextLine();
-
-        //input.close();
-
-        return horaInicial;
-    }
-
-    public String activitiesHoraFinal() {
-
-        Scanner input = new Scanner(System.in);
-
-        System.out.println("\tInsira a hora final no formato 24h ");
-        horaFinal = input.nextLine();
-
-        //input.close();
-
-        return horaFinal;
-    }
-    
-
-    public void createActivities(int idProjeto) {
-
-        Scanner input = new Scanner(System.in);
-    
-        System.out.println("--------------------ATIVIDADE--------------------");
-
-        idAtividade = activitiesIdAtividade();
+        geraId();
 
         Boolean condicao = true;
 
         while (condicao) {
 
-            System.out.println("Qual operação será realizada agora?");
-            System.out.println("\t0 - Sair");
-            System.out.println("\t1 - Adicionar descrição");
-            System.out.println("\t2 - Adicionar data inicial e hora inicial");
-            System.out.println("\t3 - Alocar membros");
-            System.out.println("\t4 - Adicionar tarefas");
-            System.out.println("\t5 - Adicionar data final e hora final");
-            System.out.println("\t6 - Adicionar responsável");
-
-
+            infoAtividade();
+    
             int opcao = input.nextInt();
             if(opcao == 0) {
                 condicao = false;
                 break;
             } else if (opcao == 1) {
 
-                descricao = activitiesDescricao();
+                descricao();
+
             } else if (opcao == 2) {
                 
-                dataInicial = activitiesDataInicial();
-                horaInicial = activitiesHoraInicial();
+                dataInicial(); 
+                horaInicial();
+                
+
             } else if (opcao == 3) {
 
-                usuarioAlocado.mostrarAllUsers();
-    
-                String nomeUsuario = usuarioAlocado.usuarioNome();
-                String cpf = usuarioAlocado.usuarioCpf();
-                idAtividade = activitiesIdAtividade();
-
-                usuarioAlocado.alocarUsuario(nomeUsuario, cpf, idAtividade);
-
-    
+                dataFinal();
+                horaFinal();
+                
             } else if (opcao == 4) {
-                tarefa = activitiesTarefa();
-            }
-            
-            else if (opcao == 5) {
                 
-                dataFinal = activitiesDataFinal();
-                horaFinal = activitiesHoraFinal();
+                responsavel = responsavelAtividade();
     
-            } else if (opcao == 6) {
+            } else if (opcao == 5) {
 
-                String nomeUsuario = usuarioAlocado.usuarioNome();
-                String cpf = usuarioAlocado.usuarioCpf();
-                responsavel = usuarioAlocado.fornecerUsers(nomeUsuario, cpf);
-
-                
-            } else
-                descricao = null;
-                responsavel = null;
-                tarefa = null;
-                dataInicial = null;
-                dataFinal = null;
-                horaInicial = null;
-                horaFinal = null;
+                geraId();
+                idAtividade = getId();
+                profissionaisEnvolvidos(idAtividade);
     
-            }
-            Activities activities = new Activities(idAtividade, descricao, tarefa, responsavel, dataInicial, dataFinal, horaInicial, horaFinal, idProjeto);
-    
-            listAtividades.add(activities);
+            } 
 
-        //input.close();
-        
-    }
-
-    public void alocarUsuario(String nome, String tipo, String cpf, int idAtividade, int idProjeto) {
-
-        Scanner input = new Scanner (System.in);
-
-        usuarioAlocado = new User(nome, tipo, cpf, idProjeto, idAtividade);
-        listUsuariosAlocados.add(usuarioAlocado);
-
-        //input.close();
-
-    }
-
-    public String activitiesTarefa() {
-
-        Scanner input = new Scanner (System.in);
-        System.out.println("Digite a tarefa:");
-        String tarefa = input.nextLine();
-
-        //input.close();
-
-        return tarefa;
-
-
-    }
-
-    public void mostrarAtividades(int idProjeto, int idAtividade) {
-
-        for (int i = 0; i < listAtividades.size(); i++) {
-
-            if (idProjeto == listAtividades.get(i).idProjeto) {
-                System.out.println("Descrição Atividade" + listAtividades.get(i).descricao);
-            }
+            
         }
+        Activities activities = new Activities(infoAtividade.getId(), idProjeto, infoAtividade.getDescricao(), responsavel, infoAtividade.getDataInicial(), infoAtividade.getDataFinal(), infoAtividade.getHoraInicial(), infoAtividade.getHoraFinal(), infoAtividade.getProfissional());
+
+        listActivities.add(activities);
+
+        return listActivities;
     }
 
-    public void removeActivities(int idAtividade) {
+    private String responsavelAtividade() {
         
-        for (int i = 0; i < listAtividades.size(); i++) {
+        System.out.println("Insira o responsável: ");
+        return responsavel = input.nextLine();
+    }
+
+    public ArrayList<Activities> editarAcitivities(int idProjeto) {
+
+        for (int j = 0; j < listActivities.size(); j++){
+
+            if (listActivities.get(j).idProjeto == idProjeto){
+
+                Boolean condicao = true;
+
+                while (condicao) {
+
+                    System.out.println("----------EDIÇÃO---------");
+                    System.out.println("\t1 - ID");
+
+                    infoAtividade();
             
-            if (idAtividade == listAtividades.get(i).idAtividade) {
-                Scanner input = new Scanner(System.in);
+                    int opcao = input.nextInt();
+                    if(opcao == 0) {
+                        condicao = false;
+                        break;
+                    } else if (opcao == 2) {
 
-                System.out.println("Qual operação será removida agora?");
-                System.out.println("\t1 - Remover descrição");
-                System.out.println("\t2 - Remover data inicial e hora inicial");
-                System.out.println("\t3 - Remover membros");
-                System.out.println("\t4 - Remover tarefas");
-                System.out.println("\t5 - Remover data final e hora final");
-                System.out.println("\t6 - Remover responsável");
-    
-    
-                int opcao = input.nextInt();
+                        descricao();
+
+                        listActivities.get(j).descricao = infoAtividade.getDescricao();
+
+                    } else if (opcao == 2) {
+                        
+                        dataInicial(); 
+                        horaInicial();
+
+                        listActivities.get(j).dataInicial = infoAtividade.getDataInicial();
+                        listActivities.get(j).horaInicial = infoAtividade.getHoraInicial();
+                        
+
+                    } else if (opcao == 3) {
+
+                        dataFinal();
+                        horaFinal();
+
+                        listActivities.get(j).dataFinal = infoAtividade.getDataFinal();
+                        listActivities.get(j).horaFinal = infoAtividade.getHoraFinal();
+                        
+                    } else if (opcao == 4) {
+                        
+                        responsavel = responsavelAtividade();
+
+                        listActivities.get(j).responsavel = responsavel;
             
-                if (opcao == 1) {
-    
-                    listAtividades.get(i).descricao = null;
-                } else if (opcao == 2) {
-                    
-                    listAtividades.get(i).dataInicial = null;
-                    listAtividades.get(i).horaInicial = null;
-                } else if (opcao == 3) {
-    
-                    usuarioAlocado.mostrarAllUsers();
-        
-                    String nomeUsuario = usuarioAlocado.usuarioNome();
-                    String cpf = usuarioAlocado.usuarioCpf();
-                    //usuarioAlocado.removeUsers(nomeUsuario, cpf);
-                    listUsuariosAlocados.get(i).removeUsersAlocados(nomeUsuario, cpf, idAtividade);
-    
-        
-                } else if (opcao == 4) {
+                    } else if (opcao == 5) {
 
-                    listAtividades.get(i).tarefa = null;
-
-                } else if (opcao == 5) {
+                        geraId();
+                        idAtividade = getId();
+                        listActivities.get(j).listProfissionais = editProfissionaisEnvolvidos(idAtividade);
                     
-                    listAtividades.get(i).dataFinal = null;
-                    listAtividades.get(i).horaFinal = null;
-        
-                } else if (opcao == 6) {
-                    listAtividades.get(i).responsavel = null;
+                    } 
+
                 }
-                //input.close();
-        
-            
-            } else {
-                System.out.println("Atividade não encontrada!");
+
             }
         }
 
+        return listActivities;
     }
 
-    public void editActivities(int idAtividade) {
+    public ArrayList<Activities> removeActivities(int idProjeto) {
+        for (int j = 0; j < listActivities.size(); j++){
 
-        for (int i = 0; i < listAtividades.size(); i++) {
+            if (listActivities.get(j).idProjeto == idProjeto){
+
+                Boolean condicao = true;
+
+                while (condicao) {
+
+                    System.out.println("----------REMOÇÃO---------");
+                    System.out.println("\t1 - ID");
+
+                    infoAtividade();
             
-            if (idAtividade == listAtividades.get(i).idAtividade) {
-                Scanner input = new Scanner(System.in);
+                    int opcao = input.nextInt();
+                    if(opcao == 0) {
+                        condicao = false;
+                        break;
+                    } else if (opcao == 2) {
 
-                System.out.println("Qual operação será editada agora?");
-                System.out.println("\t1 - Editar descrição");
-                System.out.println("\t2 - Editar data inicial e hora inicial");
-                System.out.println("\t3 - Editar membros");
-                System.out.println("\t4 - Editar tarefas");
-                System.out.println("\t5 - Editar data final e hora final");
-                System.out.println("\t6 - Editar responsável");
-    
-    
-                int opcao = input.nextInt();
+                        listActivities.get(j).descricao = null;
+
+                    } else if (opcao == 2) {
+                        
+                        listActivities.get(j).dataInicial = null;
+                        listActivities.get(j).horaInicial = null;
+                        
+
+                    } else if (opcao == 3) {
+
+                        listActivities.get(j).dataFinal = null;
+                        listActivities.get(j).horaFinal = null;
+                        
+                    } else if (opcao == 4) {
+                        
+                        responsavel = null;
+
+                        listActivities.get(j).responsavel = responsavel;
             
-                if (opcao == 1) {
-                    descricao = activitiesDescricao();
-                    listAtividades.get(i).descricao = descricao;
+                    } else if (opcao == 5) {
 
-                } else if (opcao == 2) {
-                    
-                    dataInicial = activitiesDataInicial();
-                    horaInicial = activitiesHoraInicial();
-                    listAtividades.get(i).dataInicial = dataInicial;
-                    listAtividades.get(i).horaInicial = horaInicial;
+                        geraId();
+                        idAtividade = getId();
+                        listActivities.get(j).listProfissionais = removeProfissionaisEnvolvidos(idAtividade);        
+                    } 
 
-                } else if (opcao == 3) {
-    
-                    usuarioAlocado.mostrarAllUsers();
-        
-                    String nomeUsuario = usuarioAlocado.usuarioNome();
-                    String cpf = usuarioAlocado.usuarioCpf();
-                    listUsuariosAlocados.get(i).editUsers(nomeUsuario, cpf);
-    
-        
-                } else if (opcao == 4) {
-
-                    tarefa = activitiesTarefa();
-                    listAtividades.get(i).tarefa = tarefa;
-
-                } else if (opcao == 5) {
-                    
-                    dataFinal = activitiesDataFinal();
-                    horaFinal = activitiesHoraFinal();
-                    listAtividades.get(i).dataFinal = dataFinal;
-                    listAtividades.get(i).horaFinal = horaInicial;
-        
-                } else if (opcao == 6) {
-
-                    String nomeUsuario = usuarioAlocado.usuarioNome();
-                    String cpf = usuarioAlocado.usuarioCpf();
-                    responsavel = usuarioAlocado.fornecerUsers(nomeUsuario, cpf);
                 }
-                //input.close();
-        
-            
-            } else {
-                System.out.println("Atividade não encontrada!");
+
             }
         }
+
+        return listActivities;
     }
-
-    public void mostrarAllActivities() {
-
-        for (int i = 0; i < listAtividades.size(); i++) {
-            System.out.println("Identificação: " + listAtividades.get(i).idAtividade + "\nDescrição: " + listAtividades.get(i).descricao);
-        }
-    }
-
     
 }
+
