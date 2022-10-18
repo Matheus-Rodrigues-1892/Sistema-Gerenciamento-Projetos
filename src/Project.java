@@ -4,33 +4,27 @@ public class Project extends Info{
     
     private String status;
     private int idProjeto;
+    private int idAtividade;
     private String coordenador;
     Scanner input = new Scanner (System.in);
     
-    Info infoProjeto = new Info();
     ArrayList<Activities> listActivities = new ArrayList<>();
-    ArrayList<Project> listProjetos = new ArrayList<>();
-
 
     public Project(int idProjeto, String status, String descricao, String dataInicial, String dataFinal,
-            String horaInicial, String horaFinal, ArrayList<Profissionais> listProfissionais, String coordenador, ArrayList<Activities> listActivities) {
+            String horaInicial, String horaFinal, String coordenador, ArrayList<Activities> listActivities) {
 
-        super(idProjeto, descricao, dataInicial, dataFinal, horaInicial, horaFinal, listProfissionais);
-        this.idProjeto = idProjeto;
+        super(idProjeto, descricao, dataInicial, dataFinal, horaInicial, horaFinal);
         this.status = status;
         this.coordenador = coordenador;
         this.listActivities = listActivities;
     }
 
-    public Project() {
-    }
 
-    public void createProject() {
+    public Project createProject() {
 
 
         System.out.println("--------------------CRIAÇÃO--------------------");
 
-        input = new Scanner (System.in);
         geraId();
         idProjeto = getId();
         System.out.println(idProjeto);
@@ -52,18 +46,16 @@ public class Project extends Info{
             } else if (opcao == 1) {
 
                 descricao();
-                System.out.println(getDescricao());
 
             } else if (opcao == 2) {
                 
                 dataInicial(); 
                 horaInicial();
-                
-
+    
             } else if (opcao == 3) {
 
                 dataFinal();
-                horaInicial();
+                horaFinal();
                 
             } else if (opcao == 4) {
 
@@ -71,17 +63,66 @@ public class Project extends Info{
     
             } else if (opcao == 5) {
 
-                Profissionais profissionais = new Profissionais();
-                listProfissionais = profissionais.adicionarProfissional(idProjeto);
-    
+                ProfissionalEnvolvido(idProjeto);
+
             } 
             else if (opcao == 6) {
 
-                System.out.println("Insira atividades desenvolvidas nesse projeto:");
+                infoMenu(idProjeto);
 
-                Activities activities = new Activities();
+                opcao = input.nextInt();
 
-                listActivities = activities.createActivities(idProjeto);
+                Boolean condicao2 = true;
+
+                while (condicao2) {
+
+                    switch(opcao) {
+                        case 0:
+                            condicao2 = false;
+                            break;
+                        case 1:
+                            geraId();
+                            break;
+    
+                        case 2:
+                            descricao();
+                            break;
+                        case 3:
+                            dataInicial();
+                            horaInicial();
+                            break;
+    
+                        case 4:
+                            dataFinal();
+                            horaFinal();
+                            break;
+    
+                        case 5:
+                            setResponsavel(responsavelAtividade());
+                            usuarioResponsavel(getResponsavel());
+                            break;
+    
+                        case 6:
+                            usuarioEnvolvido(idProjeto, getId());
+                            break;
+    
+                        case 7:
+                            adicionarTarefa(getId());
+                            
+                            break;
+    
+                        default: 
+                            System.out.println("ERRO!");
+                            break;
+    
+                    }
+                }
+
+
+                Activities activities = new Activities(idProjeto, getId(), getDescricao(), getDataInicial(), getDataFinal(), getHoraInicial(), getHoraFinal());
+
+                listActivities.add(activities);
+            
 
             }
         }
@@ -90,21 +131,13 @@ public class Project extends Info{
         status = projectStatus("Em andamento");
         System.out.println("Atual status: " + status);
 
-        Project project = new Project(getId(), status, getDescricao(), infoProjeto.getDataInicial(), infoProjeto.getDataFinal(), infoProjeto.getHoraInicial(), infoProjeto.getHoraFinal(), listProfissionais, coordenador, listActivities);
+        Project project = new Project(getId(), status, getDescricao(), getDataInicial(), getDataFinal(), getHoraInicial(), getHoraFinal(), coordenador, listActivities);
 
-        listProjetos.add(project);
-        
         System.out.println("--------------------------------------------------");
-
-
+        return project;
+        
     }
-    
-    private String coordenadorProjeto() {
 
-        System.out.println("Insira o coordenador do projeto: ");
-        return coordenador = input.nextLine();
-
-    }
 
     public String projectStatus(String atualStatus) {
 
@@ -118,64 +151,118 @@ public class Project extends Info{
         while (condicao) {
             
             System.out.println("----------EDIÇÃO---------");
-            System.out.println("\t1 - ID");
             infoMenu();
-            System.out.println("Selecione a opção para ser editada: ");
             int opcao = input.nextInt();
             
             geraId();
-            int id = infoProjeto.getId();
-            int index = indexProjeto(id);
+            idProjeto = getId();
+            int index = indexProjeto(getId());
 
             if(opcao == 0) {
                 condicao = false;
                 break;
             } else if (opcao == 1) {
                 geraId();
-
+                listProject.get(index).id = getId();
 
             }
             else if (opcao == 2) {
 
                 descricao();
 
-                listProjetos.get(index).descricao = infoProjeto.getDescricao();
+                listProject.get(index).descricao = getDescricao();
 
             } else if (opcao == 2) {
                 
                 dataInicial(); 
                 horaInicial();
 
-                listProjetos.get(index).dataInicial = infoProjeto.getDataInicial();  
-                listProjetos.get(index).horaInicial = infoProjeto.getHoraInicial();              
+                listProject.get(index).dataInicial = getDataInicial();  
+                listProject.get(index).horaInicial = getHoraInicial();              
 
             } else if (opcao == 3) {
 
                 dataFinal();
                 horaInicial();
 
-                listProjetos.get(index).dataFinal = infoProjeto.getDataFinal();  
-                listProjetos.get(index).horaFinal = infoProjeto.getHoraFinal();
+                listProject.get(index).dataFinal = getDataFinal();  
+                listProject.get(index).horaFinal = getHoraFinal();
                 
             } else if (opcao == 4) {
                 
-                coordenador = coordenadorProjeto();
-
-                listProjetos.get(index).coordenador = coordenador;
+                listProject.get(index).coordenador = coordenadorProjeto();
     
             } else if (opcao == 5) {
 
-                Profissionais profissionais = new Profissionais();
-                listProjetos.get(index).listProfissionais = profissionais.editProfissionais();
+                ProfissionalEnvolvido(idProjeto);
     
             } 
             else if (opcao == 6) {
 
-                System.out.println("Insira atividades desenvolvidas nesse projeto: ");
+                geraId();
+                idAtividade = getId();
+                int indexAtv = indexAtividade(getId());
 
-                Activities activities = new Activities();
+                infoMenu(idProjeto);
 
-                listActivities = activities.editarAcitivities(idProjeto);
+                opcao = input.nextInt();
+
+                Boolean condicao2 = true;
+
+                while (condicao2) {
+
+                    switch(opcao) {
+                        case 0:
+                            condicao2 = false;
+                            break;
+                        case 1:
+                            geraId();
+                            listActivities.get(indexAtv).idAtividade = getId();
+                            break;
+    
+                        case 2:
+                            descricao();
+                            listActivities.get(indexAtv).descricao = getDescricao();
+                            break;
+
+                        case 3:
+                            dataInicial();
+                            horaInicial();
+                            listActivities.get(indexAtv).dataInicial = getDataInicial();
+                            listActivities.get(indexAtv).horaInicial = getHoraInicial();
+
+                            break;
+    
+                        case 4:
+                            dataFinal();
+                            horaFinal();
+                            listActivities.get(indexAtv).dataFinal = getDataFinal();
+                            listActivities.get(indexAtv).horaFinal = getHoraFinal();
+
+                            break;
+    
+                        case 5:
+                            setResponsavel(responsavelAtividade());
+
+                            listActivities.get(indexAtv).responsavel = getResponsavel();
+                            
+                            break;
+    
+                        case 6:
+                            ProfissionalEnvolvidoAtividade(idProjeto, getId());
+                            break;
+    
+                        case 7:
+                            editarTarefa(getId());
+                            
+                            break;
+    
+                        default: 
+                            System.out.println("ERRO!");
+                            break;
+    
+                    }
+                }
 
             }
 
@@ -187,9 +274,9 @@ public class Project extends Info{
 
     private int indexProjeto(int id) {
 
-        for (int i = 0; i <listProjetos.size(); i++){
+        for (int i = 0; i < listProject.size(); i++){
 
-            if(listProjetos.get(i).idProjeto == id){
+            if(listProject.get(i).idProjeto == id){
 
                 return i;
             }
@@ -197,80 +284,177 @@ public class Project extends Info{
         return 0;
     }
 
-    public void removerProjetos() {
+    private int indexAtividade(int id){
+
+        for (int i = 0; i < listActivities.size(); i++){
+
+            if(listActivities.get(i).idAtividade == id){
+
+                return i;
+            }
+        }
+        return 0;
+
+    }
+    @Override
+    public void ProfissionalEnvolvido(int idProjeto) {
+
+        Profissional profissional = new Profissional();
+
+        String cpf = profissional.usuarioCpf();
+
+        for (String i : listUsuarioProfissionalMap.keySet()){
+
+            if(i.equals(cpf)){
+                listUsuarioProfissionalMap.get(i).idProjeto = idProjeto;
+            }
+
+        }
+    }
+
+    public void removerProjeto() {
 
         Boolean condicao = true;
         
         while (condicao) {
             
-            System.out.println("----------REMOÇÃO---------");
-            System.out.println("\t1 - ID");
+            System.out.println("---------REMOÇÃO---------");
             infoMenu();
-            System.out.println("Selecione a opção para ser removida:");
             int opcao = input.nextInt();
             
             geraId();
-            int id = infoProjeto.getId();
-            int index = indexProjeto(id);
+            idProjeto = getId();
+            int index = indexProjeto(getId());
 
             if(opcao == 0) {
+
                 condicao = false;
                 break;
-            } else if (opcao == 1) {
-                geraId();
 
+            } else if (opcao == 1) {
+
+                listProject.remove(index);
+                System.out.println("Projeto removido");
+                condicao = false;
+                break;
 
             }
             else if (opcao == 2) {
 
-                listProjetos.get(index).descricao = null;
+                listProject.get(index).descricao = null;
 
             } else if (opcao == 2) {
-
-                listProjetos.get(index).dataInicial = null;  
-                listProjetos.get(index).horaInicial = null;              
+                
+                listProject.get(index).dataInicial = null;  
+                listProject.get(index).horaInicial = null;              
 
             } else if (opcao == 3) {
 
-                listProjetos.get(index).dataFinal = null;  
-                listProjetos.get(index).horaFinal = null;
+
+                listProject.get(index).dataFinal = null;  
+                listProject.get(index).horaFinal = null;
                 
             } else if (opcao == 4) {
-
-                listProjetos.get(index).coordenador = null;
+                
+                listProject.get(index).coordenador = null;
     
             } else if (opcao == 5) {
 
-                Profissionais profissionais = new Profissionais();
-                listProjetos.get(index).listProfissionais = profissionais.removeProfissionais();
+                ProfissionalRemocao(idProjeto);
     
             } 
             else if (opcao == 6) {
 
-                Activities activities = new Activities();
+                geraId();
+                idAtividade = getId();
+                int indexAtv = indexAtividade(getId());
 
-                listActivities = activities.removeActivities(idProjeto);
+                infoMenu(idProjeto);
+
+                opcao = input.nextInt();
+
+                Boolean condicao2 = true;
+
+                while (condicao2) {
+
+                    switch(opcao) {
+                        case 0:
+                            condicao2 = false;
+                            break;
+                        case 1:
+                            geraId();
+                            listActivities.remove(indexAtv);
+                            System.out.println("Atividade removida!");
+                            break;
+    
+                        case 2:
+                            listActivities.get(indexAtv).descricao = null;
+                            break;
+
+                        case 3:
+
+                            listActivities.get(indexAtv).dataInicial = null;
+                            listActivities.get(indexAtv).horaInicial = null;
+
+                            break;
+    
+                        case 4:
+
+                            listActivities.get(indexAtv).dataFinal = null;
+                            listActivities.get(indexAtv).horaFinal = null;
+
+                            break;
+    
+                        case 5:
+
+                            listActivities.get(indexAtv).responsavel = null;
+                            
+                            break;
+    
+                        case 6:
+                            ProfissionalRemocaoAtividade(idProjeto, getId());
+                            break;
+    
+                        case 7:
+                            removerTarefa(getId());
+                            break;
+    
+                        default: 
+                            System.out.println("ERRO!");
+                            break;
+    
+                    }
+                }
 
             }
 
         }
-
-
     }
 
-    public void printProjetos () {
+    @Override
+    public String toString() {
 
-        Profissionais profissionais = new Profissionais();
+        for(int i = 0; i < listProject.size(); i++){
 
-        for (int i = 0; i < listProjetos.size(); i++){
+            System.out.println("ID Projeto: " + listProject.get(i).idProjeto);
+            System.out.println("Descrição: " + listProject.get(i));
 
-            System.out.println("ID: " + idProjeto + listProjetos.get(i).idProjeto + "DESCRIÇÃO: " + listProjetos.get(i).descricao);
-            int id = listProjetos.get(i).idProjeto;
-            profissionais.printProfissionaisProjetoEnvolvidos(id);
-            
+            for(int j = 0; j < listActivities.size(); j++){
+                if (listActivities.get(j).idProjeto == listProject.get(i).idProjeto){
+
+                    System.out.println("ID Atividade: " + listActivities.get(j).idAtividade);
+                    System.out.println("Descrição: " + listActivities.get(j));
+                    toString(idAtividade);
+
+                }
+            }
 
         }
-        
+
+        return null;
+
     }
+
+
 
 }
