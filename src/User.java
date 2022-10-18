@@ -10,14 +10,14 @@ public class User{
     protected int idAtividade;
     protected int bolsa;
     protected int prazo;
-    protected String responsavel;
+    protected int responsavel;
 
     Scanner input = new Scanner(System.in);
     
     public User(){}
 
 
-    public User(String nome, String tipo, String cpf, int idProjeto, int idAtividade, String responsavel) {
+    public User(String nome, String tipo, String cpf, int idProjeto, int idAtividade, int responsavel) {
          this.nome = nome;
          this.tipo = tipo;
          this.cpf = cpf;
@@ -115,8 +115,8 @@ public class User{
     protected void menuUsers(){
 
         System.out.println("\t1 - Nome");
-        System.out.println("\t2 - Tipo");
-        System.out.println("\t3 - CPF");
+        System.out.println("\t2 - CPF");
+        System.out.println("\t3 - Tipo");
         System.out.println("\t4 - Bolsa");
         System.out.println("\t5 - Prazo de vigência da bolsa");
     }

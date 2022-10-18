@@ -8,7 +8,7 @@ public class MenuPrincipal extends User{
     HashMap<String, User> listUsuarioMap = new HashMap<>();
     HashMap<String, Profissional> listUsuarioProfissionalMap = new HashMap<>();
     HashMap<String, Coordenador> listUsuarioCoordenadorMap = new HashMap<>();
-    Project projeto;
+    
     ArrayList<Project> listProject = new ArrayList<Project>();
     Scanner input = new Scanner(System.in);
 
@@ -37,88 +37,176 @@ public class MenuPrincipal extends User{
 
                 case 0:
 
-                    System.out.println("=================================\n\tObrigado por usar o sistema!");
+                    System.out.println("=================================\n\tObrigado por usar o sistema!=============================");
                     condicao = false;
                     break;
                 case 1:
-                    nome = usuarioNome();
-                    setNome(nome);
-                    cpf = usuarioCpf();
-                    setCpf(cpf);
-                    tipo = usuarioTipo();
-                    setTipo(tipo);
-
-
-                    if (tipo.equals("Professor") || tipo.equals("Pesquisador")){
-                        
-                        Coordenador coordenador = new Coordenador(nome, tipo, cpf, 0000, 0000, null, null);
-
-                        listUsuarioCoordenadorMap.put(cpf, coordenador);
-
-                    } else if (tipo.equals("Desenvolvedor") || tipo.equals("Testador") || tipo.equals("Analista")){
-
-                        Profissional profissional = new Profissional(nome, tipo, cpf, 0000, 0000, 0.00, 0000, null, null);
-                        listUsuarioProfissionalMap.put(cpf, profissional);
-                    } else {
-
-                        User usuario = new User(nome, tipo, cpf, 0000, 0000, null);
-
-                        listUsuarioMap.put(cpf, usuario);
-                    }
-
-
-                    System.out.println("Usuário adicionado com sucesso!\n");
+                    
+                    criar();
                     break;
 
                 case 2: 
-
-                    cpf = usuarioCpf();
-
-                    for (String i : listUsuarioMap.keySet()){
-
-                        if(i.equals(cpf)){
-                            removeUser(listUsuarioMap.get(i));
-                        }
-
-                    }
-
+                    remover();
                     break;
-
+                
                 case 3:
-
-                    cpf = usuarioCpf();
-
-                    for (String i : listUsuarioMap.keySet()){
-
-                        if(i.equals(cpf)){
-                            editUsers(listUsuarioMap.get(i));
-                        }
-
-                    }
-
+                    editar();
                     break;
-
+                
                 case 4:
-                    projeto = new Project(opcao, cpf, cpf, cpf, tipo, responsavel, nome, cpf, null);
-                    projeto.createProject();
+                    int p = geraId();
+                    Project projeto = new Project(p, null, null, null, null, null, null, null);
+                    listProject.add(projeto);
+                    //System.out.println(listProject.get(opcao));
+                    projeto.createProject(listUsuarioMap, listUsuarioProfissionalMap, listUsuarioCoordenadorMap,listProject, p);
                     
                     break;
 
                 case 5:
-                    projeto.removerProjeto();
+                    //projeto.geraId();
+                    //projeto.removerProjeto(projeto.getId());
                     break;
 
                 case 6:
-                    projeto.editarProjects();
+                    //projeto.geraId();
+                   //projeto.editarProjects(projeto.getId());
                     break;
 
                 case 7:
-                    projeto.toString();
+
+                    relatorioUsuarios();
+                    //projeto.toString();
+                    break;
 
                 default:
                     System.out.println("ERRO!");
                     break;
             }
+        }
+    }
+
+    private int geraId() {
+
+        System.out.println("Digite o número de identificação");
+        return input.nextInt();
+    }
+
+    private void criar (){
+        nome = usuarioNome();
+        setNome(nome);
+        cpf = usuarioCpf();
+        setCpf(cpf);
+        tipo = usuarioTipo();
+        setTipo(tipo);
+
+
+        if (tipo.equals("Professor") || tipo.equals("Pesquisador")){
+                        
+            Coordenador coordenador = new Coordenador(nome, tipo, cpf, 0000, 0000, 0000);
+
+            listUsuarioCoordenadorMap.put(cpf, coordenador);
+
+        } else if (tipo.equals("Desenvolvedor") || tipo.equals("Testador") || tipo.equals("Analista")){
+
+            Profissional profissional = new Profissional(nome, tipo, cpf, 0000, 0000, 0.00, 0000, 0000);
+            listUsuarioProfissionalMap.put(cpf, profissional);
+
+        } else {
+
+            User usuario = new User(nome, tipo, cpf, 0000, 0000, 0000);
+
+            listUsuarioMap.put(cpf, usuario);
+        }
+
+        System.out.println("Usuário criado com sucesso!\n");
+
+    }
+
+    private void remover() {
+
+        cpf = usuarioCpf();
+
+            System.out.println(listUsuarioMap.get(cpf));
+
+            for (String i : listUsuarioMap.keySet()){
+
+                if(i.equals(cpf)) removeUser(listUsuarioMap.get(i));
+
+            }
+
+
+            for (String i : listUsuarioProfissionalMap.keySet()){
+
+                if(i.equals(cpf)) removeUser(listUsuarioProfissionalMap.get(i));
+
+            }
+
+
+            for (String i : listUsuarioCoordenadorMap.keySet()){
+
+                if(i.equals(cpf)) removeUser(listUsuarioCoordenadorMap.get(i));
+
+            }
+
+            System.out.println("Informação removida com sucesso!\n");
+
+
+    }
+
+    private void editar() {
+
+        cpf = usuarioCpf();
+
+            System.out.println(listUsuarioMap.get(cpf));
+
+            for (String i : listUsuarioMap.keySet()){
+
+                if(i.equals(cpf)) editUsers(listUsuarioMap.get(i));
+
+            }
+
+
+            for (String i : listUsuarioProfissionalMap.keySet()){
+
+                if(i.equals(cpf)) editUsers(listUsuarioProfissionalMap.get(i));
+
+            }
+
+
+            for (String i : listUsuarioCoordenadorMap.keySet()){
+
+                if(i.equals(cpf)) editUsers(listUsuarioCoordenadorMap.get(i));
+
+            }
+
+            System.out.println("Informação editada com sucesso!\n");
+
+    }
+
+    private void relatorioUsuarios(){
+
+        for (String i : listUsuarioMap.keySet()){
+
+            System.out.println("NOME: " + listUsuarioMap.get(i).nome + " TIPO: " + listUsuarioMap.get(i).tipo);
+        }
+
+        for (String i : listUsuarioProfissionalMap.keySet()){
+            
+            System.out.println("NOME: " + listUsuarioProfissionalMap.get(i).nome + " TIPO: " + listUsuarioProfissionalMap.get(i).tipo);
+        }
+
+        for (String i : listUsuarioCoordenadorMap.keySet()){
+        
+            System.out.println("NOME: " + listUsuarioCoordenadorMap.get(i).nome + " TIPO: " + listUsuarioCoordenadorMap.get(i).cpf);
+        }
+
+    }
+
+    protected void listaCoordenadores() {
+        for (String i : listUsuarioCoordenadorMap.keySet()){
+
+            System.out.println("NOME: " + listUsuarioCoordenadorMap.get(i).nome + "CPF: " + listUsuarioCoordenadorMap.get(i).cpf + "TIPO: " + listUsuarioCoordenadorMap.get(i).tipo);
+
         }
     }
 }

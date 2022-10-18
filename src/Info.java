@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Info extends MenuPrincipal{
@@ -27,6 +28,7 @@ public class Info extends MenuPrincipal{
     }
     public void infoMenu(int idAtividade){
 
+        System.out.println("=====================ATIVIDADE=============");
         System.out.println("\t0 - SAIR");
         System.out.println("\t1 - N° identificação Atividade");
         System.out.println("\t2 - Descrição ");
@@ -41,14 +43,15 @@ public class Info extends MenuPrincipal{
     
     public void infoMenu(){
 
+        System.out.println("=====================PROJETO=============");
         System.out.println("\t0 - SAIR");
         System.out.println("\t1 - N° identificação");
-        System.out.println("\t1 - Descrição");
-        System.out.println("\t2 - Data inicial e hora inicial");
-        System.out.println("\t3 - Data final e hora final");
-        System.out.println("\t4 - Coordenador");
-        System.out.println("\t5 - Profissionais envolvidos no projeto");
-        System.out.println("\t6 - Atividades");
+        System.out.println("\t2 - Descrição");
+        System.out.println("\t3 - Data inicial e hora inicial");
+        System.out.println("\t4 - Data final e hora final");
+        System.out.println("\t5 - Coordenador");
+        System.out.println("\t6 - Profissionais envolvidos no projeto");
+        System.out.println("\t7 - Atividades");
         
         System.out.println("Insira a operação referente ao menu");
     }
@@ -115,7 +118,7 @@ public class Info extends MenuPrincipal{
     }
     
     public void descricao (){
-
+        input = new Scanner(System.in);
         System.out.println("Digite a descrição:");
         setDescricao(input.nextLine());
         
@@ -153,25 +156,43 @@ public class Info extends MenuPrincipal{
 
     }
 
-    protected String coordenadorProjeto() {
+    protected void coordenadorProjeto(HashMap<String, Coordenador> listUsuarioCoordenadorMap, int idProjeto) {
 
-        System.out.println("Insira o coordenador do projeto: ");
-        return coordenador = input.nextLine();
-
-    }
-
-    protected String responsavelAtividade() {
-
-        System.out.println("Insira o responsável pela atividade: ");
-        return responsavel = input.nextLine();
+        listaCoordenadores();
+        System.out.println("Insira o CPF do coordenador do projeto: ");
+        cpf = usuarioCpf();
+        listUsuarioCoordenadorMap.get(cpf).idProjeto = idProjeto;
+        System.out.println("Coordenador inserido...");
 
     }
 
-    public void adicionarTarefa(int idAtividade){
+    protected void responsavelAtividade(int idAtividade) {
+
+        System.out.println("Insira o CPF do responsável pela atividade: ");
+        String cpfResponsavel = usuarioCpf();
+
+        if (listUsuarioCoordenadorMap.get(cpfResponsavel).cpf == cpfResponsavel){
+                        
+            listUsuarioCoordenadorMap.get(cpfResponsavel).responsavel = idAtividade;
+
+        } else if (listUsuarioProfissionalMap.get(cpfResponsavel).cpf == cpfResponsavel){
+                        
+            listUsuarioProfissionalMap.get(cpfResponsavel).responsavel = idAtividade;
+
+        } else if (listUsuarioMap.get(cpfResponsavel).cpf == cpfResponsavel){
+                        
+            listUsuarioMap.get(cpfResponsavel).responsavel = idAtividade;
+        }
+
+        System.out.println("Responsável inserido...");
+
+    }
+
+    public void adicionarTarefa(HashMap<String, Profissional> listUsuarioProfissionalMap, int idAtividade){
 
         cpf = usuarioCpf();
 
-        for (String i : listUsuarioMap.keySet()){
+        for (String i : listUsuarioProfissionalMap.keySet()){
 
             if(cpf.equals(i) && idAtividade == listUsuarioProfissionalMap.get(i).idAtividade){
                 System.out.println("Insira a atividade:");
@@ -183,11 +204,11 @@ public class Info extends MenuPrincipal{
 
     }
 
-    public void editarTarefa(int idAtividade){
+    public void editarTarefa(HashMap<String, Profissional> listUsuarioProfissionalMap, int idAtividade){
 
         cpf = usuarioCpf();
 
-        for (String i : listUsuarioMap.keySet()){
+        for (String i : listUsuarioProfissionalMap.keySet()){
 
             if(cpf.equals(i) && idAtividade == listUsuarioProfissionalMap.get(i).idAtividade){
                 System.out.println("Edite a tarefa:");
@@ -199,11 +220,11 @@ public class Info extends MenuPrincipal{
 
     }
 
-    public void removerTarefa(int idAtividade){
+    public void removerTarefa(HashMap<String, Profissional> listUsuarioProfissionalMap,int idAtividade){
 
         cpf = usuarioCpf();
 
-        for (String i : listUsuarioMap.keySet()){
+        for (String i : listUsuarioProfissionalMap.keySet()){
 
             if(cpf.equals(i) && idAtividade == listUsuarioProfissionalMap.get(i).idAtividade){
                 listUsuarioProfissionalMap.get(i).tarefa = null;
@@ -228,7 +249,7 @@ public class Info extends MenuPrincipal{
         }
     }
 
-    public void ProfissionalEnvolvido(int idProjeto) {
+    public void profissionalEnvolvido(HashMap<String, Profissional> listUsuarioProfissionalMap, int idProjeto) {
 
 
         cpf = usuarioCpf();
@@ -242,7 +263,7 @@ public class Info extends MenuPrincipal{
         }
     }
 
-    public void ProfissionalRemocao(int idProjeto) {
+    public void profissionalRemocao(HashMap<String, Profissional> listUsuarioProfissionalMap, int idProjeto) {
 
 
         cpf = usuarioCpf();
@@ -256,11 +277,24 @@ public class Info extends MenuPrincipal{
         }
     }
 
-    public void ProfissionalEnvolvidoAtividade(int idProjeto, int idAtividade) {
+    public void coordenadorProjetoRemocao(HashMap<String, Coordenador> listUsuarioCoordenadorMap, int idProjeto) {
 
-        Profissional profissional = new Profissional();
 
-        String cpf = profissional.usuarioCpf();
+        cpf = usuarioCpf();
+
+        for (String i : listUsuarioCoordenadorMap.keySet()){
+
+            if(i.equals(cpf)){
+                listUsuarioCoordenadorMap.get(i).idProjeto = 0000;
+            }
+
+        }
+    }
+
+    public void profissionalEnvolvidoAtividade(HashMap <String, Profissional>listUsuarioMap,int idProjeto, int idAtividade) {
+
+
+        cpf = usuarioCpf();
 
         for (String i : listUsuarioProfissionalMap.keySet()){
 
@@ -271,7 +305,7 @@ public class Info extends MenuPrincipal{
         }
     }
 
-    public void ProfissionalRemocaoAtividade(int idProjeto, int idAtividade) {
+    public void profissionalRemocaoAtividade(int idProjeto, int idAtividade) {
 
 
         cpf = usuarioCpf();
@@ -331,40 +365,7 @@ public class Info extends MenuPrincipal{
         }
     }
 
-    public void usuarioResponsavel (String responsavel){
-
-        String cpf = usuarioCpf();
-
-        for (String i : listUsuarioMap.keySet()){
-
-            if(i.equals(cpf)){
-
-                responsavel = input.nextLine();
-                listUsuarioMap.get(i).responsavel = responsavel;
-            }
-
-        }
-
-        for (String i : listUsuarioProfissionalMap.keySet()){
-
-            if(i.equals(cpf)){
-
-                responsavel = input.nextLine();
-                listUsuarioProfissionalMap.get(i).responsavel = responsavel;
-            }
-
-        }
-
-        for (String i : listUsuarioCoordenadorMap.keySet()){
-
-            if(i.equals(cpf)){
-
-                responsavel = input.nextLine();
-                listUsuarioCoordenadorMap.get(i).responsavel = responsavel;
-            }
-
-        }
-    }
+    
 
     public String toString(int idAtividade){
 
@@ -389,6 +390,15 @@ public class Info extends MenuPrincipal{
         }
 
         return null;
+    }
+
+    @Override
+    protected void listaCoordenadores() {
+        for (String i : listUsuarioCoordenadorMap.keySet()){
+
+            System.out.println("NOME: " + listUsuarioCoordenadorMap.get(i).nome + "CPF: " + listUsuarioCoordenadorMap.get(i).cpf + "TIPO: " + listUsuarioCoordenadorMap.get(i));
+
+        }
     }
 
     

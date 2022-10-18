@@ -4,12 +4,11 @@ public class Profissional extends User{
     private int prazo;
     String tarefa;
 
-    public Profissional(String nome, String tipo, String cpf, int idProjeto, int idAtividade, double bolsa, int prazo, String responsavel, String tarefa) {
+    public Profissional(String nome, String tipo, String cpf, int idProjeto, int idAtividade, double bolsa, int prazo, int responsavel) {
         
         super(nome, tipo, cpf, idProjeto, idAtividade, responsavel);
         this.bolsa = bolsa;
         this.prazo = prazo;
-        this.tarefa = tarefa;
     }
 
     public Profissional() {
@@ -37,6 +36,33 @@ public class Profissional extends User{
 
     public void setTarefa(String tarefa) {
         this.tarefa = tarefa;
+    }
+
+    @Override
+    protected void removeUser(User profissional) {
+
+        System.out.println("------- REMOVER INFO PROFISSIONAL ----------");
+        menuUsers();
+        int opcao = input.nextInt();
+
+        switch (opcao) {
+            case 1:
+                profissional.nome = null;
+                break;
+            
+            case 2:
+                profissional.cpf = null;
+                break;
+
+            case 3:
+                profissional.tipo = null;
+                break;
+
+            default:
+                System.out.println("Usuário não encontrado.");
+                break;
+        }
+
     }
 
    

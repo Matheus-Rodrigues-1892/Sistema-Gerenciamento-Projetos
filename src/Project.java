@@ -20,14 +20,9 @@ public class Project extends Info{
     }
 
 
-    public Project createProject() {
-
+    public void createProject(HashMap<String, User> listUsuarioMap, HashMap<String, Profissional> listUsuarioProfissionalMapHashMap, HashMap<String, Coordenador> listUsuarioCoordenadorMap, ArrayList<Project> listProject, int idProjeto) {
 
         System.out.println("--------------------CRIAÇÃO--------------------");
-
-        geraId();
-        idProjeto = getId();
-        System.out.println(idProjeto);
 
         status = projectStatus("Em processo de criação");
 
@@ -37,33 +32,45 @@ public class Project extends Info{
 
         while (condicao) {
 
-            infoMenu();
+            System.out.println("=====================PROJETO=============");
+            System.out.println("\t0 - SAIR");
+            System.out.println("\t1 - Descrição");
+            System.out.println("\t2 - Data inicial e hora inicial");
+            System.out.println("\t3 - Data final e hora final");
+            System.out.println("\t4 - Coordenador");
+            System.out.println("\t5 - Profissionais envolvidos no projeto");
+            System.out.println("\t6 - Atividades");
+        
+            System.out.println("Insira a operação referente ao menu");
     
             int opcao = input.nextInt();
+            int index = indexProjeto(idProjeto);
+
             if(opcao == 0) {
                 condicao = false;
                 break;
             } else if (opcao == 1) {
 
                 descricao();
+                listProject.get(index).descricao = getDescricao();
 
             } else if (opcao == 2) {
                 
-                dataInicial(); 
-                horaInicial();
+                listProject.get(index).dataInicial = getDataInicial(); 
+                listProject.get(index).horaInicial = getHoraInicial();
     
             } else if (opcao == 3) {
 
-                dataFinal();
-                horaFinal();
+                listProject.get(index).dataFinal = getDataFinal(); 
+                listProject.get(index).horaFinal = getHoraFinal();
                 
             } else if (opcao == 4) {
 
-                coordenador = coordenadorProjeto();
+                coordenadorProjeto(listUsuarioCoordenadorMap,idProjeto);
     
             } else if (opcao == 5) {
 
-                ProfissionalEnvolvido(idProjeto);
+                profissionalEnvolvido(listUsuarioProfissionalMap,idProjeto);
 
             } 
             else if (opcao == 6) {
@@ -98,16 +105,15 @@ public class Project extends Info{
                             break;
     
                         case 5:
-                            setResponsavel(responsavelAtividade());
-                            usuarioResponsavel(getResponsavel());
+                            responsavelAtividade(idAtividade);
                             break;
     
                         case 6:
-                            usuarioEnvolvido(idProjeto, getId());
+                            profissionalEnvolvidoAtividade(listUsuarioProfissionalMap, idProjeto, getId());
                             break;
     
                         case 7:
-                            adicionarTarefa(getId());
+                            adicionarTarefa(listUsuarioProfissionalMap, getId());
                             
                             break;
     
@@ -131,10 +137,10 @@ public class Project extends Info{
         status = projectStatus("Em andamento");
         System.out.println("Atual status: " + status);
 
-        Project project = new Project(getId(), status, getDescricao(), getDataInicial(), getDataFinal(), getHoraInicial(), getHoraFinal(), coordenador, listActivities);
+        System.out.println("Projeto iniciado!!!");
 
         System.out.println("--------------------------------------------------");
-        return project;
+
         
     }
 
@@ -144,7 +150,7 @@ public class Project extends Info{
         return atualStatus;
     }
 
-    public void editarProjects() {
+    public void editarProjects(HashMap<String, User> listUsuarioMap, HashMap<String, Profissional> listUsuarioProfissionalMap, HashMap<String, Coordenador> listUsuarioCoordenadorMap, ArrayList<Project> listProject, int idProjeto) {
         
         Boolean condicao = true;
         
@@ -153,10 +159,8 @@ public class Project extends Info{
             System.out.println("----------EDIÇÃO---------");
             infoMenu();
             int opcao = input.nextInt();
+            int index = indexProjeto(idProjeto);
             
-            geraId();
-            idProjeto = getId();
-            int index = indexProjeto(getId());
 
             if(opcao == 0) {
                 condicao = false;
@@ -190,26 +194,25 @@ public class Project extends Info{
                 
             } else if (opcao == 4) {
                 
-                listProject.get(index).coordenador = coordenadorProjeto();
+                coordenadorProjeto(listUsuarioCoordenadorMap, idProjeto);
+
     
             } else if (opcao == 5) {
 
-                ProfissionalEnvolvido(idProjeto);
+                profissionalEnvolvido(listUsuarioProfissionalMap, idProjeto);
     
             } 
             else if (opcao == 6) {
-
-                geraId();
-                idAtividade = getId();
-                int indexAtv = indexAtividade(getId());
-
-                infoMenu(idProjeto);
-
-                opcao = input.nextInt();
-
+                
                 Boolean condicao2 = true;
-
+                
                 while (condicao2) {
+                    
+                    geraId();
+                    idAtividade = getId();
+                    int indexAtv = indexAtividade(getId());
+                    infoMenu(idProjeto);
+                    opcao = input.nextInt();
 
                     switch(opcao) {
                         case 0:
@@ -242,18 +245,16 @@ public class Project extends Info{
                             break;
     
                         case 5:
-                            setResponsavel(responsavelAtividade());
-
-                            listActivities.get(indexAtv).responsavel = getResponsavel();
+                            responsavelAtividade(idAtividade);
                             
                             break;
     
                         case 6:
-                            ProfissionalEnvolvidoAtividade(idProjeto, getId());
+                            profissionalEnvolvidoAtividade(listUsuarioProfissionalMap, idProjeto, getId());
                             break;
     
                         case 7:
-                            editarTarefa(getId());
+                            editarTarefa(listUsuarioProfissionalMap, getId());
                             
                             break;
     
@@ -272,11 +273,11 @@ public class Project extends Info{
 
     }
 
-    private int indexProjeto(int id) {
+    private int indexProjeto(int idP) {
 
         for (int i = 0; i < listProject.size(); i++){
 
-            if(listProject.get(i).idProjeto == id){
+            if(listProject.get(i).id == idP){
 
                 return i;
             }
@@ -296,12 +297,11 @@ public class Project extends Info{
         return 0;
 
     }
-    @Override
+
+    /*@Override
     public void ProfissionalEnvolvido(int idProjeto) {
 
-        Profissional profissional = new Profissional();
-
-        String cpf = profissional.usuarioCpf();
+        cpf = usuarioCpf();
 
         for (String i : listUsuarioProfissionalMap.keySet()){
 
@@ -310,9 +310,9 @@ public class Project extends Info{
             }
 
         }
-    }
+    }*/
 
-    public void removerProjeto() {
+    public void removerProjeto(HashMap<String, User> listUsuarioMap, HashMap<String, Profissional> listUsuarioProfissionalMap, HashMap<String, Coordenador> listUsuarioCoordenadorMap, ArrayList<Project> listProject, int idProjeto) {
 
         Boolean condicao = true;
         
@@ -321,10 +321,7 @@ public class Project extends Info{
             System.out.println("---------REMOÇÃO---------");
             infoMenu();
             int opcao = input.nextInt();
-            
-            geraId();
-            idProjeto = getId();
-            int index = indexProjeto(getId());
+            int index = indexProjeto(idProjeto);
 
             if(opcao == 0) {
 
@@ -360,7 +357,7 @@ public class Project extends Info{
     
             } else if (opcao == 5) {
 
-                ProfissionalRemocao(idProjeto);
+                profissionalRemocao(listUsuarioProfissionalMap,idProjeto);
     
             } 
             else if (opcao == 6) {
@@ -412,11 +409,11 @@ public class Project extends Info{
                             break;
     
                         case 6:
-                            ProfissionalRemocaoAtividade(idProjeto, getId());
+                            profissionalRemocaoAtividade(idProjeto, getId());
                             break;
     
                         case 7:
-                            removerTarefa(getId());
+                            removerTarefa(listUsuarioProfissionalMap, getId());
                             break;
     
                         default: 
