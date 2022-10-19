@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -36,7 +37,8 @@ public class Info extends MenuPrincipal{
         System.out.println("\t4 - Data final e hora final ");
         System.out.println("\t5 - Responsável pela atividade");
         System.out.println("\t6 - Profissionais envolvidos na atividade ");
-        System.out.println("\t7 - Tarefas a serem realizadas ");
+        System.out.println("\t7 - Alocar usuário ");
+        System.out.println("\t8 - Alocar usuário");
         
         System.out.println("Insira a operação referente ao menu");
     }
@@ -52,6 +54,7 @@ public class Info extends MenuPrincipal{
         System.out.println("\t5 - Coordenador");
         System.out.println("\t6 - Profissionais envolvidos no projeto");
         System.out.println("\t7 - Atividades");
+        System.out.println("\t8 - Alocar usuário");
         
         System.out.println("Insira a operação referente ao menu");
     }
@@ -168,7 +171,6 @@ public class Info extends MenuPrincipal{
 
     protected void responsavelAtividade(int idAtividade) {
 
-        System.out.println("Insira o CPF do responsável pela atividade: ");
         String cpfResponsavel = usuarioCpf();
 
         if (listUsuarioCoordenadorMap.get(cpfResponsavel).cpf == cpfResponsavel){
@@ -188,55 +190,7 @@ public class Info extends MenuPrincipal{
 
     }
 
-    public void adicionarTarefa(HashMap<String, Profissional> listUsuarioProfissionalMap, int idAtividade){
-
-        cpf = usuarioCpf();
-
-        for (String i : listUsuarioProfissionalMap.keySet()){
-
-            if(cpf.equals(i) && idAtividade == listUsuarioProfissionalMap.get(i).idAtividade){
-                System.out.println("Insira a atividade:");
-                tarefa = input.nextLine();
-                listUsuarioProfissionalMap.get(i).tarefa = tarefa;
-            }
-
-        }
-
-    }
-
-    public void editarTarefa(HashMap<String, Profissional> listUsuarioProfissionalMap, int idAtividade){
-
-        cpf = usuarioCpf();
-
-        for (String i : listUsuarioProfissionalMap.keySet()){
-
-            if(cpf.equals(i) && idAtividade == listUsuarioProfissionalMap.get(i).idAtividade){
-                System.out.println("Edite a tarefa:");
-                tarefa = input.nextLine();
-                listUsuarioProfissionalMap.get(i).tarefa = tarefa;
-            }
-
-        }
-
-    }
-
-    public void removerTarefa(HashMap<String, Profissional> listUsuarioProfissionalMap,int idAtividade){
-
-        cpf = usuarioCpf();
-
-        for (String i : listUsuarioProfissionalMap.keySet()){
-
-            if(cpf.equals(i) && idAtividade == listUsuarioProfissionalMap.get(i).idAtividade){
-                listUsuarioProfissionalMap.get(i).tarefa = null;
-            }
-
-        }
-
-    }
-
-    
-
-    public void usuarioEnvolvido(int idProjeto) {
+    public void usuarioEnvolvido(HashMap<String, User> listUsuarioMap, HashMap<String, Profissional> listUsuarioProfissionalMap, HashMap<String, Coordenador> listUsuarioCoordenadorMap, int idProjeto) {
 
         cpf = usuarioCpf();
 
@@ -244,6 +198,51 @@ public class Info extends MenuPrincipal{
 
             if(i.equals(cpf)){
                 listUsuarioMap.get(i).idProjeto = idProjeto;
+            }
+
+        }
+
+        for (String i : listUsuarioProfissionalMap.keySet()){
+
+            if(i.equals(cpf)){
+                listUsuarioProfissionalMap.get(i).idProjeto = idProjeto;
+            }
+
+        }
+
+        for (String i : listUsuarioCoordenadorMap.keySet()){
+
+            if(i.equals(cpf)){
+                listUsuarioCoordenadorMap.get(i).idProjeto = idProjeto;
+            }
+
+        }
+    }
+
+    public void usuarioEnvolvido(HashMap<String, User> listUsuarioMap, HashMap<String, Profissional> listUsuarioProfissionalMap, HashMap<String, Coordenador> listUsuarioCoordenadorMap, int idProjeto, int idAtividade) {
+
+        cpf = usuarioCpf();
+
+        for (String i : listUsuarioMap.keySet()){
+
+            if(i.equals(cpf)){
+                listUsuarioMap.get(i).idAtividade = idAtividade;
+            }
+
+        }
+
+        for (String i : listUsuarioProfissionalMap.keySet()){
+
+            if(i.equals(cpf)){
+                listUsuarioProfissionalMap.get(i).idAtividade = idAtividade;
+            }
+
+        }
+
+        for (String i : listUsuarioCoordenadorMap.keySet()){
+
+            if(i.equals(cpf)){
+                listUsuarioCoordenadorMap.get(i).idAtividade = idAtividade;
             }
 
         }
@@ -291,7 +290,7 @@ public class Info extends MenuPrincipal{
         }
     }
 
-    public void profissionalEnvolvidoAtividade(HashMap <String, Profissional>listUsuarioMap,int idProjeto, int idAtividade) {
+    public void profissionalEnvolvidoAtividade(HashMap <String, Profissional>listUsuarioProfissionalMap,int idProjeto, int idAtividade) {
 
 
         cpf = usuarioCpf();
@@ -300,12 +299,16 @@ public class Info extends MenuPrincipal{
 
             if(i.equals(cpf) && listUsuarioProfissionalMap.get(i).idProjeto == idProjeto){
                 listUsuarioProfissionalMap.get(i).idAtividade = idAtividade;
+
+                System.out.println("Insira a tarefa:");
+                tarefa = input.nextLine();
+                listUsuarioProfissionalMap.get(i).tarefa = tarefa;
             }
 
         }
     }
 
-    public void profissionalRemocaoAtividade(int idProjeto, int idAtividade) {
+    public void profissionalRemocaoAtividade(HashMap <String, Profissional>listUsuarioProfissionalMap,int idProjeto, int idAtividade) {
 
 
         cpf = usuarioCpf();
@@ -314,30 +317,14 @@ public class Info extends MenuPrincipal{
 
             if(i.equals(cpf) && listUsuarioProfissionalMap.get(i).idProjeto == idProjeto){
                 listUsuarioProfissionalMap.get(i).idAtividade = 0000;
+                listUsuarioProfissionalMap.get(i).tarefa = null;
+
             }
 
         }
     }
 
-
-
-    public void usuarioEnvolvido(int idProjeto, int idAtividade) {
-
-        User user = new User();
-
-        String cpf = user.usuarioCpf();
-
-        for (String i : listUsuarioMap.keySet()){
-
-            if(i.equals(cpf)){
-                listUsuarioMap.get(i).idProjeto = idProjeto;
-                listUsuarioMap.get(i).idAtividade = idAtividade;
-            }
-
-        }
-    }
-
-    public void usuarioRemovido (int idProjeto){
+    public void usuarioEnvolvidoRemocao(HashMap<String, User> listUsuarioMap, HashMap<String, Profissional> listUsuarioProfissionalMap, HashMap<String, Coordenador> listUsuarioCoordenadorMap, int idProjeto) {
 
         String cpf = usuarioCpf();
 
@@ -348,18 +335,50 @@ public class Info extends MenuPrincipal{
             }
 
         }
-    
+
+        for (String i : listUsuarioProfissionalMap.keySet()){
+
+            if(i.equals(cpf)){
+                listUsuarioProfissionalMap.get(i).idProjeto = 0000;
+            }
+
+        }
+
+        for (String i : listUsuarioCoordenadorMap.keySet()){
+
+            if(i.equals(cpf)){
+                listUsuarioCoordenadorMap.get(i).idProjeto = 0000;
+            }
+
+        }
     }
 
-    public void usuarioRemovido(int idProjeto, int idAtividade) {
+
+
+    public void usuarioEnvolvidoRemocao(HashMap<String, User> listUsuarioMap, HashMap<String, Profissional> listUsuarioProfissionalMap, HashMap<String, Coordenador> listUsuarioCoordenadorMap, int idProjeto, int idAtividade) {
 
         String cpf = usuarioCpf();
 
         for (String i : listUsuarioMap.keySet()){
 
             if(i.equals(cpf)){
-                listUsuarioMap.get(i).idProjeto = 0000;
                 listUsuarioMap.get(i).idAtividade = 0000;
+            }
+
+        }
+
+        for (String i : listUsuarioProfissionalMap.keySet()){
+
+            if(i.equals(cpf)){
+                listUsuarioProfissionalMap.get(i).idAtividade = 0000;
+            }
+
+        }
+
+        for (String i : listUsuarioCoordenadorMap.keySet()){
+
+            if(i.equals(cpf)){
+                listUsuarioCoordenadorMap.get(i).idAtividade = 0000;
             }
 
         }

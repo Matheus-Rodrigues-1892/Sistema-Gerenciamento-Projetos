@@ -8,7 +8,7 @@ public class User{
     protected String cpf;
     protected int idProjeto;
     protected int idAtividade;
-    protected int bolsa;
+    protected double bolsa;
     protected int prazo;
     protected int responsavel;
 
@@ -111,14 +111,32 @@ public class User{
         return cpf;
 
     }
-    
-    protected void menuUsers(){
+
+    protected void menuProfissionais(){
 
         System.out.println("\t1 - Nome");
         System.out.println("\t2 - CPF");
         System.out.println("\t3 - Tipo");
         System.out.println("\t4 - Bolsa");
         System.out.println("\t5 - Prazo de vigência da bolsa");
+    }
+
+    public double bolsaProfissional(){
+        System.out.println("Valor em R$:");
+        return input.nextDouble();
+    }
+
+    public int prazoBolsa(){
+        System.out.println("Prazo em dias:");
+        return input.nextInt();
+    }
+    
+    protected void menuUsers(){
+
+        System.out.println("\t1 - Nome");
+        System.out.println("\t2 - CPF");
+        System.out.println("\t3 - Tipo");
+        
     }
 
     protected void menuUsuarioTipo() {

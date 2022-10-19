@@ -10,6 +10,8 @@ public class MenuPrincipal extends User{
     HashMap<String, Coordenador> listUsuarioCoordenadorMap = new HashMap<>();
     
     ArrayList<Project> listProject = new ArrayList<Project>();
+    ArrayList<Activities> listActivities = new ArrayList<>();
+
     Scanner input = new Scanner(System.in);
 
     public void menu() {
@@ -20,7 +22,7 @@ public class MenuPrincipal extends User{
             
             
             System.out.println("=============================MENU===============================");
-            System.out.println("\t0 - Sair");
+            System.out.println("\t0 - SAIR");
             System.out.println ("\t1 - Criar usuário");
             System.out.println("\t2 - Remover informações de usuários");
             System.out.println("\t3 - Editar informações de usuários");
@@ -168,7 +170,7 @@ public class MenuPrincipal extends User{
 
             for (String i : listUsuarioProfissionalMap.keySet()){
 
-                if(i.equals(cpf)) editUsers(listUsuarioProfissionalMap.get(i));
+                if(i.equals(cpf)) editProfissionais(listUsuarioProfissionalMap.get(i));
 
             }
 
@@ -182,6 +184,76 @@ public class MenuPrincipal extends User{
             System.out.println("Informação editada com sucesso!\n");
 
     }
+    
+    public void editProfissionais(Profissional profissional) {
+
+        System.out.println("------- EDITAR INFO PROFISSIONAIS ----------");
+        menuProfissionais();
+        int opcao = input.nextInt();
+
+        switch (opcao) {
+            case 1:
+                nome = usuarioNome();
+                profissional.nome = nome;
+                break;
+            
+            case 2:
+                cpf = usuarioCpf();
+                profissional.cpf = cpf;
+                break;
+
+            case 3:
+                tipo = usuarioTipo();
+                profissional.tipo = tipo;
+                break;
+            case 4:
+                profissional.bolsa = bolsaProfissional();
+                break;
+            case 5: 
+                profissional.prazo = prazoBolsa();
+                break;
+
+            default:
+                System.out.println("Usuário não encontrado.");
+                break;
+                
+        }
+    }
+
+    @Override
+    protected void removeUser(User profissional) {
+
+        System.out.println("------- REMOVER INFO PROFISSIONAL ----------");
+        menuUsers();
+        int opcao = input.nextInt();
+
+        switch (opcao) {
+            case 1:
+                profissional.nome = null;
+                break;
+            
+            case 2:
+                profissional.cpf = null;
+                break;
+
+            case 3:
+                profissional.tipo = null;
+                break;
+
+            case 4:
+                profissional.bolsa = 0;
+                break;
+            case 5: 
+                profissional.prazo = 0;
+                break;
+
+            default:
+                System.out.println("Usuário não encontrado.");
+                break;
+        }
+
+    }
+
 
     private void relatorioUsuarios(){
 
@@ -197,9 +269,18 @@ public class MenuPrincipal extends User{
 
         for (String i : listUsuarioCoordenadorMap.keySet()){
         
-            System.out.println("NOME: " + listUsuarioCoordenadorMap.get(i).nome + " TIPO: " + listUsuarioCoordenadorMap.get(i).cpf);
+            System.out.println("NOME: " + listUsuarioCoordenadorMap.get(i).nome + " TIPO: " + listUsuarioCoordenadorMap.get(i).tipo);
         }
 
+    }
+
+    private void relatorioProjetos(){
+        for(int i = 0; i < listProject.size(); i++){
+
+            System.out.println("ID: " + listProject.get(i).idProjeto);
+            System.out.println("ID: " + listProject.get(i).idProjeto);
+
+        }
     }
 
     protected void listaCoordenadores() {
