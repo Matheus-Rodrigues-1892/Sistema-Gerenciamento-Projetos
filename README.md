@@ -1,6 +1,6 @@
-## Getting Started
+## Sistema de Gerenciamento Acadêmco
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Projeto relacionado à disciplina de Projeto de Software
 
 ## Folder Structure
 
